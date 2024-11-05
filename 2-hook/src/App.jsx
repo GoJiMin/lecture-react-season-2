@@ -2,24 +2,22 @@
 
 // export default App;
 
+import React from "react";
 import MyReact from "./lib/MyReact";
 
-export default function NameField() {
-  const [firstName, setFirstName] = MyReact.useState("사용자1");
-  const [lastName, setLastName] = MyReact.useState("김");
+const Counter = () => {
+  const [count, setCount] = React.useState(0);
 
-  const handleChangeFirstName = (e) => {
-    setFirstName(e.target.value);
-  };
+  MyReact.useEffect(() => {
+    document.title = `count: ${count}`;
+    console.log("effect1");
+  });
 
-  const handleChangeLastName = (e) => {
-    setLastName(e.target.value);
-  };
+  const handleClick = () => setCount(count + 1);
 
-  return (
-    <>
-      <input value={firstName} onChange={handleChangeFirstName} />
-      <input value={lastName} onChange={handleChangeLastName} />
-    </>
-  );
-}
+  console.log("Counter rendered");
+
+  return <button onClick={handleClick}>더하기</button>;
+};
+
+export default Counter;

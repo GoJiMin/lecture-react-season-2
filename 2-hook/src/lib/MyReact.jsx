@@ -40,7 +40,16 @@ const MyReact = (function MyReact() {
     return { forceUpdate };
   };
 
-  return { useState };
+  const useEffect = (effect) => {
+    function runDedeferedEffect() {
+      const ENOUGH_TO_RUN_RENDER = 1;
+      setTimeout(effect, ENOUGH_TO_RUN_RENDER);
+    }
+
+    runDedeferedEffect();
+  };
+
+  return { useState, useEffect };
 })();
 
 export default MyReact;
