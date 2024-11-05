@@ -2,6 +2,7 @@ import React from "react";
 
 const MyReact = (function MyReact() {
   const memorizedStates = [];
+  let dep;
   const isInitialized = [];
   let cursor = 0;
 
@@ -40,12 +41,23 @@ const MyReact = (function MyReact() {
     return { forceUpdate };
   };
 
-  const useEffect = (effect) => {
+  const useEffect = (effect, nextDep) => {
     function runDedeferedEffect() {
       const ENOUGH_TO_RUN_RENDER = 1;
       setTimeout(effect, ENOUGH_TO_RUN_RENDER);
     }
 
+    if (!isInitialized[cursor]) {
+      isInitialized[cursor] = true;
+      dep = nextDep;
+
+      runDedeferedEffect();
+      return;
+    }
+
+    if (dep === nextDep) return;
+
+    dep = nextDep;
     runDedeferedEffect();
   };
 
