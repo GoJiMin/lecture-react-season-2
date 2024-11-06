@@ -9,11 +9,16 @@ const Counter = () => {
   MyReact.resetCursor();
 
   const [count, setCount] = React.useState(0);
-  const [name, setName] = React.useState(localStorage.getItem("name") || "");
+  const [name, setName] = React.useState("");
 
   const handleClick = () => setCount(count + 1);
 
   const handleChangeName = (e) => setName(e.target.value);
+
+  MyReact.useEffect(() => {
+    setName(localStorage.getItem("name") || "");
+    console.log("effect3");
+  }, []);
 
   MyReact.useEffect(() => {
     document.title = `count: ${count} | name: ${name}`;
