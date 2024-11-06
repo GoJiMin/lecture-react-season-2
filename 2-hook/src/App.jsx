@@ -6,8 +6,10 @@ import React from "react";
 import MyReact from "./lib/MyReact";
 
 const Counter = () => {
+  MyReact.resetCursor();
+
   const [count, setCount] = React.useState(0);
-  const [name, setName] = React.useState("");
+  const [name, setName] = React.useState(localStorage.getItem("name") || "");
 
   const handleClick = () => setCount(count + 1);
 
@@ -17,6 +19,11 @@ const Counter = () => {
     document.title = `count: ${count}`;
     console.log("effect1");
   }, count);
+
+  MyReact.useEffect(() => {
+    localStorage.setItem("name", name);
+    console.log("effect2");
+  }, name);
 
   console.log("Counter rendered");
 
