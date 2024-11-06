@@ -16,13 +16,21 @@ const Counter = () => {
   const handleChangeName = (e) => setName(e.target.value);
 
   MyReact.useEffect(() => {
-    setName(localStorage.getItem("name") || "");
+    const storedName = localStorage.getItem("name") || "";
+    if (storedName !== name) {
+      setName(storedName);
+    }
     console.log("effect3");
   }, []);
 
   MyReact.useEffect(() => {
     document.title = `count: ${count} | name: ${name}`;
     console.log("effect1");
+
+    return function cleanUp() {
+      document.title = "";
+      console.log("effect1 cleanUp");
+    };
   }, [name, count]);
 
   MyReact.useEffect(() => {
@@ -40,4 +48,22 @@ const Counter = () => {
   );
 };
 
-export default Counter;
+export default () => {
+  const [mounted, setMounted] = React.useState(false);
+
+  const handleToggle = () => {
+    setMounted((prevMounted) => {
+      const nextMounted = !prevMounted;
+
+      if (!nextMounted) MyReact.cleanUpEffects();
+
+      return nextMounted;
+    });
+  };
+  return (
+    <>
+      <button onClick={handleToggle}>컴포넌트 토글</button>
+      {mounted && <Counter />}
+    </>
+  );
+};
