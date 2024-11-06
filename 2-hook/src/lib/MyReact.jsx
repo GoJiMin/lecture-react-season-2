@@ -41,7 +41,7 @@ const MyReact = (function MyReact() {
     return { forceUpdate };
   };
 
-  const useEffect = (effect, nextDep) => {
+  const useEffect = (effect, nextDeps) => {
     function runDedeferedEffect() {
       const ENOUGH_TO_RUN_RENDER = 1;
       setTimeout(effect, ENOUGH_TO_RUN_RENDER);
@@ -49,21 +49,25 @@ const MyReact = (function MyReact() {
 
     if (!isInitialized[cursor]) {
       isInitialized[cursor] = true;
-      deps[cursor] = nextDep;
+      deps[cursor] = nextDeps;
       cursor++;
 
       runDedeferedEffect();
       return;
     }
 
-    const prevDep = deps[cursor];
+    const prevDeps = deps[cursor];
 
-    if (prevDep === nextDep) {
+    const depsSame = prevDeps.every(
+      (prevDep, index) => prevDep === nextDeps[index]
+    );
+
+    if (depsSame) {
       cursor++;
       return;
     }
 
-    deps[cursor] = nextDep;
+    deps[cursor] = nextDeps;
     cursor++;
     runDedeferedEffect();
   };

@@ -16,14 +16,14 @@ const Counter = () => {
   const handleChangeName = (e) => setName(e.target.value);
 
   MyReact.useEffect(() => {
-    document.title = `count: ${count}`;
+    document.title = `count: ${count} | name: ${name}`;
     console.log("effect1");
-  }, count);
+  }, [name, count]);
 
   MyReact.useEffect(() => {
     localStorage.setItem("name", name);
     console.log("effect2");
-  }, name);
+  }, [name]);
 
   console.log("Counter rendered");
 
