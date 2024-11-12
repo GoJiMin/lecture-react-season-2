@@ -1,8 +1,10 @@
+import CartPage from "./pages/CartPage";
 import ProductPage from "./pages/ProductPage";
 
 const App = () => (
   <>
-    <ProductPage />
+    {/* <ProductPage /> */}
+    <CartPage />
   </>
 );
 
