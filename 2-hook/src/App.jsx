@@ -14,34 +14,28 @@ import ProductPage from "./pages/ProductPage";
 
 // export default App;
 
-const countContext = MyReact.createContext({});
+export default () => {
+  const ref1 = MyReact.useRef(1);
+  const ref2 = MyReact.useRef(null);
 
-const CountProvider = ({ children }) => {
-  const [count, setCount] = React.useState(0);
+  const [state, setState] = React.useState(0);
+  const handleClick = () => setState((prev) => prev + 1);
 
-  const value = { count, setCount };
   return (
-    <countContext.Provider value={value}>{children}</countContext.Provider>
+    <>
+      <h1>Test</h1>
+      <button onClick={handleClick}>state: {state}</button>
+      <p>ref1: {ref1.current}</p>
+      <div>
+        <input type="text" ref={ref2} />
+        <button
+          onClick={() => {
+            console.log("input ref: ", ref2.current.value);
+          }}
+        >
+          ref2 조회
+        </button>
+      </div>
+    </>
   );
 };
-
-const Count = () => {
-  const { count } = MyReact.useContext(countContext);
-
-  return <div>{count}</div>;
-};
-
-const PlusButton = () => {
-  const { setCount } = MyReact.useContext(countContext);
-
-  const handleClick = () => setCount((prev) => prev + 1);
-
-  return <button onClick={handleClick}>+ 증가</button>;
-};
-
-export default () => (
-  <CountProvider>
-    <Count />
-    <PlusButton />
-  </CountProvider>
-);
