@@ -74,31 +74,52 @@ const LoginForm = () => {
     password: "",
   });
 
+  const [touched, setTouched] = React.useState({
+    email: false,
+    password: false,
+  });
+
   const validator = new Validation(rules);
 
   const validate = (formState) => {
     return validator.validate(formState);
   };
 
+  const handleBlur = (e) => {
+    setTouched({
+      ...touched,
+      [e.target.name]: true,
+    });
+  };
+
   const handleChange = (e) => {
     const { name, value } = e.target;
 
-    setFormState((prevFormState) => ({
-      ...prevFormState,
+    setFormState({
+      ...formState,
       [name]: value,
-    }));
+    });
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
 
+    setTouched({
+      email: true,
+      password: true,
+    });
+
     const validationErrors = validate(formState);
     setErrors(validationErrors);
 
-    if (Object.values(errors).some(Boolean)) return;
+    if (Object.values(validationErrors).some(Boolean)) return;
 
     console.log("Submitted", formState);
   };
+
+  React.useEffect(() => {
+    setErrors(validate(formState));
+  }, [formState]);
 
   return (
     <form noValidate onSubmit={handleSubmit}>
@@ -108,16 +129,18 @@ const LoginForm = () => {
         value={formState.email}
         onChange={handleChange}
         autoFocus
+        onBlur={handleBlur}
       />
-      {errors.email && <p>{errors.email}</p>}
+      {touched.email && errors.email && <p>{errors.email}</p>}
       <input
         type="password"
         name="password"
         value={formState.password}
         onChange={handleChange}
+        onBlur={handleBlur}
       />
-      {errors.password && <p>{errors.password}</p>}
-      <button onClick={handleSubmit}>Login</button>
+      {touched.password && errors.password && <p>{errors.password}</p>}
+      <button>Login</button>
     </form>
   );
 };
