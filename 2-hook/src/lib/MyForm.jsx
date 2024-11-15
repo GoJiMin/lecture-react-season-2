@@ -77,9 +77,30 @@ export const useForm = ({ initialValues, rules, onSubmit }) => {
     onSubmit(formState);
   };
 
+  const getFieldProps = (name) => {
+    const value = formState[name];
+    const onBlur = handleBlur;
+    const onChange = handleChange;
+
+    return {
+      name,
+      value,
+      onBlur,
+      onChange,
+    };
+  };
+
   React.useEffect(() => {
     setErrors(validate(formState));
   }, [formState]);
 
-  return { formState, touched, errors, handleChange, handleBlur, handleSubmit };
+  return {
+    formState,
+    touched,
+    errors,
+    handleChange,
+    handleBlur,
+    handleSubmit,
+    getFieldProps,
+  };
 };
