@@ -14,35 +14,7 @@ import ProductPage from "./pages/ProductPage";
 
 // export default App;
 
-class Validation {
-  constructor(rules) {
-    this.rules = rules;
-  }
-
-  validateField(name, value) {
-    const fieldRules = this.rules[name];
-
-    if (!fieldRules) return "";
-
-    for (const rule of fieldRules) {
-      const errorMessage = rule(value);
-
-      if (errorMessage) return errorMessage;
-    }
-
-    return "";
-  }
-
-  validate(formState) {
-    const errors = {};
-
-    for (const name in formState) {
-      errors[name] = this.validateField(name, formState[name]);
-    }
-
-    return errors;
-  }
-}
+import * as MyForm from "./lib/MyForm";
 
 const rules = {
   email: [
@@ -64,62 +36,16 @@ const rules = {
 };
 
 const LoginForm = () => {
-  const [formState, setFormState] = React.useState({
-    email: "",
-    password: "",
-  });
-
-  const [errors, setErrors] = React.useState({
-    email: "",
-    password: "",
-  });
-
-  const [touched, setTouched] = React.useState({
-    email: false,
-    password: false,
-  });
-
-  const validator = new Validation(rules);
-
-  const validate = (formState) => {
-    return validator.validate(formState);
-  };
-
-  const handleBlur = (e) => {
-    setTouched({
-      ...touched,
-      [e.target.name]: true,
-    });
-  };
-
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-
-    setFormState({
-      ...formState,
-      [name]: value,
-    });
-  };
-
-  const handleSubmit = (e) => {
-    e.preventDefault();
-
-    setTouched({
-      email: true,
-      password: true,
-    });
-
-    const validationErrors = validate(formState);
-    setErrors(validationErrors);
-
-    if (Object.values(validationErrors).some(Boolean)) return;
-
+  const onSubmit = (formState) => {
     console.log("Submitted", formState);
   };
 
-  React.useEffect(() => {
-    setErrors(validate(formState));
-  }, [formState]);
+  const { formState, touched, errors, handleChange, handleBlur, handleSubmit } =
+    MyForm.useForm({
+      initialValues: { email: "", password: "" },
+      rules,
+      onSubmit,
+    });
 
   return (
     <form noValidate onSubmit={handleSubmit}>
