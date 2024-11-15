@@ -15,32 +15,42 @@ import ProductPage from "./pages/ProductPage";
 // export default App;
 
 const LoginForm = () => {
-  const formRef = React.useRef(null);
+  const [formState, setFormState] = React.useState({
+    email: "",
+    password: "",
+  });
 
-  const getInputValueByName = (name) => {
-    if (!formRef) return;
+  const handleChange = (e) => {
+    const { name, value } = e.target;
 
-    const inputElement = formRef.current.elements[name];
-
-    if (!inputElement) return;
-
-    return inputElement.value;
+    setFormState((prevFormState) => ({
+      ...prevFormState,
+      [name]: value,
+    }));
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    const email = getInputValueByName("email");
-    const password = getInputValueByName("password");
-
-    console.log("email", email);
-    console.log("password", password);
+    console.log("Submitted", formState);
   };
+
   return (
-    <form ref={formRef} onSubmit={handleSubmit}>
-      <input type="email" name="email" required autoFocus />
-      <input type="password" name="password" required />
-      <button>Login</button>
+    <form onSubmit={handleSubmit}>
+      <input
+        type="email"
+        name="email"
+        value={formState.email}
+        onChange={handleChange}
+        autoFocus
+      />
+      <input
+        type="password"
+        name="password"
+        value={formState.password}
+        onChange={handleChange}
+      />
+      <button onClick={handleSubmit}>Login</button>
     </form>
   );
 };
