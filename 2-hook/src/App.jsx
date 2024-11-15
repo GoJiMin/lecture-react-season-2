@@ -14,28 +14,35 @@ import ProductPage from "./pages/ProductPage";
 
 // export default App;
 
-export default () => {
-  const ref1 = MyReact.useRef(1);
-  const ref2 = MyReact.useRef(null);
+const LoginForm = () => {
+  const formRef = React.useRef(null);
 
-  const [state, setState] = React.useState(0);
-  const handleClick = () => setState((prev) => prev + 1);
+  const getInputValueByName = (name) => {
+    if (!formRef) return;
 
+    const inputElement = formRef.current.elements[name];
+
+    if (!inputElement) return;
+
+    return inputElement.value;
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+
+    const email = getInputValueByName("email");
+    const password = getInputValueByName("password");
+
+    console.log("email", email);
+    console.log("password", password);
+  };
   return (
-    <>
-      <h1>Test</h1>
-      <button onClick={handleClick}>state: {state}</button>
-      <p>ref1: {ref1.current}</p>
-      <div>
-        <input type="text" ref={ref2} />
-        <button
-          onClick={() => {
-            console.log("input ref: ", ref2.current.value);
-          }}
-        >
-          ref2 조회
-        </button>
-      </div>
-    </>
+    <form ref={formRef} onSubmit={handleSubmit}>
+      <input type="email" name="email" required autoFocus />
+      <input type="password" name="password" required />
+      <button>Login</button>
+    </form>
   );
 };
+
+export default LoginForm;
