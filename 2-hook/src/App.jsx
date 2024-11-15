@@ -36,24 +36,22 @@ const rules = {
 };
 
 const LoginForm = () => {
-  const onSubmit = (formState) => {
+  const handleSubmit = (formState) => {
     console.log("Submitted", formState);
   };
 
-  const { touched, errors, handleSubmit, getFieldProps } = MyForm.useForm({
-    initialValues: { email: "", password: "" },
-    rules,
-    onSubmit,
-  });
-
   return (
-    <form noValidate onSubmit={handleSubmit}>
-      <input type="email" name="email" autoFocus {...getFieldProps("email")} />
-      {touched.email && errors.email && <p>{errors.email}</p>}
-      <input type="password" name="password" {...getFieldProps("password")} />
-      {touched.password && errors.password && <p>{errors.password}</p>}
+    <MyForm.Form
+      initialValues={{ email: "", password: "" }}
+      rules={rules}
+      onSubmit={handleSubmit}
+    >
+      <MyForm.Field type="email" name="email" autoFocus />
+      <MyForm.ErrorMessage name="email" />
+      <MyForm.Field type="password" name="password" />
+      <MyForm.ErrorMessage name="password" />
       <button>Login</button>
-    </form>
+    </MyForm.Form>
   );
 };
 

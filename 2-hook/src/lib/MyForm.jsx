@@ -104,3 +104,35 @@ export const useForm = ({ initialValues, rules, onSubmit }) => {
     getFieldProps,
   };
 };
+
+const formContext = React.createContext();
+
+export const Form = ({ children, ...rest }) => {
+  const formValue = useForm(rest);
+
+  return (
+    <formContext.Provider value={formValue}>
+      <form noValidate onSubmit={formValue.handleSubmit}>
+        {children}
+      </form>
+    </formContext.Provider>
+  );
+};
+
+export const Field = ({ as = "input", children, ...rest }) => {
+  const { getFieldProps } = React.useContext(formContext);
+
+  return React.createElement(
+    as,
+    { ...rest, ...getFieldProps(rest.name) },
+    children
+  );
+};
+
+export const ErrorMessage = ({ name }) => {
+  const { touched, errors } = React.useContext(formContext);
+
+  if (!touched[name] || !errors[name]) return null;
+
+  return <p>{errors[name]}</p>;
+};
