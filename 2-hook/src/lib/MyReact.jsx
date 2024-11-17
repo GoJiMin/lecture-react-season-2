@@ -133,12 +133,37 @@ const MyReact = (function MyReact() {
     return memorizedState;
   }
 
+  function createStore(reducer, initialValue) {
+    let currentState = initialValue;
+    const listeners = [];
+
+    const getState = () => currentState;
+    const subscribe = (callback) => listeners.push(callback);
+
+    const dispatch = (action) => {
+      const nextState = reducer(currentState, action);
+
+      if (nextState !== currentState) {
+        currentState = nextState;
+
+        listeners.forEach((listener) => listener());
+      }
+    };
+
+    return {
+      getState,
+      subscribe,
+      dispatch,
+    };
+  }
+
   return {
     useState,
     useEffect,
     useContext,
     useRef,
     createContext,
+    createStore,
     resetCursor,
     cleanUpEffects,
   };

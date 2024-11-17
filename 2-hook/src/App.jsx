@@ -3,7 +3,7 @@ import MyReact from "./lib/MyReact";
 import CartPage from "./pages/CartPage";
 import OrderPage from "./pages/OrderPage";
 import ProductPage from "./pages/ProductPage";
-import RegisterForm from "./components/RegisterForm";
+import LectureReducer from "./components/LectureReducer";
 
 const App = () => (
   <>
@@ -13,4 +13,4 @@ const App = () => (
   </>
 );
 
-export default RegisterForm;
+export default LectureReducer;
