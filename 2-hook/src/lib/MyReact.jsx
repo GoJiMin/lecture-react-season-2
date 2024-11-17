@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useReducer } from "react";
 import { createEventEmitter } from "shared/lib/EventEmitter";
 
 const MyReact = (function MyReact() {
@@ -157,11 +157,27 @@ const MyReact = (function MyReact() {
     };
   }
 
+  function useReducer(reducer, initialValue) {
+    const { forceUpdate } = useForceUpdate();
+    if (!isInitialized[cursor]) {
+      memorizedStates[cursor] = createStore(reducer, initialValue);
+      isInitialized[cursor] = true;
+    }
+
+    const store = memorizedStates[cursor];
+    store.subscribe(forceUpdate);
+
+    cursor = cursor + 1;
+
+    return [store.getState(), store.dispatch];
+  }
+
   return {
     useState,
     useEffect,
     useContext,
     useRef,
+    useReducer,
     createContext,
     createStore,
     resetCursor,
