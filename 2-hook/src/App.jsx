@@ -14,4 +14,4 @@ const App = () => (
   </>
 );
 
-export default RegisterForm;
+export default App;
