@@ -4,6 +4,7 @@ import CartPage from "./pages/CartPage";
 import OrderPage from "./pages/OrderPage";
 import ProductPage from "./pages/ProductPage";
 import LectureReducer from "./components/LectureReducer";
+import RegisterForm from "./components/RegisterForm";
 
 const App = () => (
   <>
@@ -13,4 +14,4 @@ const App = () => (
   </>
 );
 
-export default LectureReducer;
+export default RegisterForm;
