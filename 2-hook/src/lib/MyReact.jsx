@@ -172,12 +172,38 @@ const MyReact = (function MyReact() {
     return [store.getState(), store.dispatch];
   }
 
+  function useMemo(nextCreate, deps) {
+    if (!memorizedStates[cursor]) {
+      const nextValue = nextCreate();
+
+      memorizedStates[cursor] = [nextValue, deps];
+      cursor = cursor + 1;
+
+      return nextValue;
+    }
+
+    const nextDeps = deps;
+    const [prevValue, prevDeps] = memorizedStates[cursor];
+
+    if (prevDeps.every((prev, idx) => prev === nextDeps[idx])) {
+      cursor = cursor + 1;
+      return prevValue;
+    }
+
+    const nextValue = nextCreate();
+    memorizedStates[cursor] = [nextValue, nextDeps];
+    cursor = cursor + 1;
+
+    return nextValue;
+  }
+
   return {
     useState,
     useEffect,
     useContext,
     useRef,
     useReducer,
+    useMemo,
     createContext,
     createStore,
     resetCursor,
