@@ -16,22 +16,32 @@ const Board = ({ posts, tag }) => {
 
   const filteredPosts = MyReact.useMemo(filterPosts, [posts, tag]);
 
+  console.log("Board rendered");
+
   return (
     <section>
       <button onClick={() => setDarkTheme(!darkTheme)}>
         테마 변경
         <span>{darkTheme ? "어두운 테마" : "밝은 테마"}</span>
       </button>
-      <ul>
-        {filteredPosts.map(({ id, content, tag }) => (
-          <li key={id}>
-            #{tag} {content}
-          </li>
-        ))}
-      </ul>
+      <FilteredPosts posts={filteredPosts} />
     </section>
   );
 };
+
+const FilteredPosts = MyReact.memo(({ posts }) => {
+  console.log("Filtered Posts rendered");
+
+  return (
+    <ul>
+      {posts.map(({ id, content, tag }) => (
+        <li key={id}>
+          #{tag} {content}
+        </li>
+      ))}
+    </ul>
+  );
+});
 
 const POSTS = [
   { id: "id_1", content: "content_1", tag: "tag_1" },
